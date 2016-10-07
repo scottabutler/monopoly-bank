@@ -1,0 +1,104 @@
+<html>
+<head>
+	<title>Monopoly Bank - Configuration</title>
+	<style type="text/css">
+		body {
+			font-family: 'Kabala', 'Arial';
+			margin: 0 2% 0 2%;
+			//background: rgb(33, 33, 33);
+			background: rgb(195, 222, 184);
+		}
+		div.wrapper {
+			background: #fff;
+			float: left;
+			height: 78%;
+			width: 96%;
+			padding: 0 2% 2% 2%;
+		}
+		div.logo-outer {
+			text-align: middle;
+			width: 100%;
+			margin-bottom: 1%;
+		}
+		div.logo {
+			background-image: url("logo.png");
+			height: 10%;
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: center top;
+			width: 30%;
+			margin: 0 auto;
+		}
+		h1 { margin-top: 1%; }
+		hr { width: 60%; margin: 2% 0 }
+		ul { 
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+		}
+		ul li {
+			font-size: 30px;
+			margin-bottom: 0.5%;
+			width: 100%;
+		}
+		ul li input[type="text"] {
+			font-size: 26px; 
+			width: 20%;
+		}
+		label {
+			font-size: 26px;
+			margin: 0 2% 0 1%;
+		}
+		input[type=checkbox] {
+		  /* All browsers except webkit*/
+		  transform: scale(1.5);
+
+		  /* Webkit browsers*/
+		  -webkit-transform: scale(1.5);
+		}
+		input[type="button"] {
+			font-size: 26px;
+		}
+		.player-heading, #inprogressmessage {
+			display: inline-block;
+		}
+		#inprogressmessage {
+			margin-left: 34%;
+			font-size: 2em;
+			color: red;
+		}
+	</style>
+	<script src="config.js"></script>
+</head>
+<body onload="initConfig()">	
+	<div class="logo-outer">
+		<div class="logo"></div>
+	</div>
+	<div class="wrapper">
+		<h1 class="player-heading">Players</h1><div id="inprogressmessage" style="visibility: hidden">Game in progress</div>
+		<ul>
+			<li>Player 1: <input type="text" id="input-p1"/></li>
+			<li>Player 2: <input type="text" id="input-p2"/></li>
+			<li>Player 3: <input type="text" id="input-p3"/></li>
+		</ul>
+		<hr />
+		<h1>Settings</h1>		
+		<input type="checkbox" onclick="updateStartingAmount()" id="speed" name="speed" />
+		<label for="speed">Speed dice (extra $1000)</label>
+		
+		<input type="checkbox" id="debug" name="debug" />
+		<label for="debug">Debug mode</label>
+		
+		<input type="checkbox" id="test" name="test" />
+		<label for="test">Test mode</label>
+		<hr />
+		<h1>Amounts</h1>
+		<ul>
+			<li>Starting amount: $<input type="text" id="input-start-amount" value="1500" /></li>
+		</ul>
+		<br />
+		<input type="button" onclick="saveChanges()" value="Save changes" />
+		<input type="button" onclick="reset(true)" value="Reset" />
+	</div>
+</body>
+</html>

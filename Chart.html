@@ -1,0 +1,145 @@
+<html>
+<head>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="highcharts.js"></script>
+	<script src="config.js"></script>
+         
+	<script>
+		var p0history = [];
+		var p1history = [];
+		var p2history = [];
+		var p3history = [];
+		var p4history = [];
+		var xCategories = [];
+		var chart;
+		/*
+			StorageEvent {
+				key;          // name of the property set, changed etc.
+				oldValue;     // old value of property before change
+				newValue;     // new value of property after change
+				url;          // url of page that made the change
+				storageArea;  // localStorage or sessionStorage,
+							  // depending on where the change happened.
+			}
+			
+			localStorage.setItem("p" + i + "balance", players[i]);
+		*/
+	
+		function refreshChart() {
+			chart.redraw();
+		}
+	
+		function onStorageEvent(storageEvent) {
+			var key = storageEvent.key;
+			if (key == "balanceupdate") {
+				xCategories.push(storageEvent.newValue);
+				chart.xAxis[0].setCategories(xCategories, false);
+				pushBalances();
+				refreshChart();				
+			}			
+		}
+
+		function pushBalances() {
+			//p0history.push(localStorage.getItem("p0balance") *1);
+			p1history.push(localStorage.getItem("p1balance") *1);
+			p2history.push(localStorage.getItem("p2balance") *1);
+			p3history.push(localStorage.getItem("p3balance") *1);
+			//p4history.push(localStorage.getItem("p4balance") *1);
+			
+			chart.series[0].addPoint(localStorage.getItem("p1balance") *1, false);
+			chart.series[1].addPoint(localStorage.getItem("p2balance") *1, false);
+			chart.series[2].addPoint(localStorage.getItem("p3balance") *1, false);
+			
+			localStorage.setItem("p1history", JSON.stringify(p1history));
+			localStorage.setItem("p2history", JSON.stringify(p2history));
+			localStorage.setItem("p3history", JSON.stringify(p3history));
+			localStorage.setItem("xcategoryhistory", JSON.stringify(xCategories));
+		}
+		
+		function getCurrentTime() {
+			var date = new Date();
+			var result = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+			return result;
+		}
+		
+		function init() {
+			//xCategories.push(getCurrentTime());
+			
+			if (localStorage.getItem("gameinprogress") == "false") {
+				resetChart();
+			}
+			
+			p1history = JSON.parse(localStorage.getItem("p1history"));
+			p2history = JSON.parse(localStorage.getItem("p2history"));
+			p3history = JSON.parse(localStorage.getItem("p3history"));
+			xCategories = JSON.parse(localStorage.getItem("xcategoryhistory"));			
+			
+			chart = new Highcharts.Chart({
+				chart: {
+					renderTo: 'container'
+				},
+				title: {
+					text: 'Monopoly Player Balances',
+					x: -20 //center
+				},
+				subtitle: {
+					text: 'Scott Butler 2016',
+					x: -20
+				},
+				xAxis: {
+					categories: xCategories
+				},
+				yAxis: {
+					title: {
+						text: 'Amount ($)'
+					},
+					plotLines: [{
+						value: 0,
+						width: 1,
+						color: '#808080'
+					}]
+				},
+				tooltip: {
+					valuePrefix: '$'
+				},
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'middle',
+					borderWidth: 0
+				},
+				series: [/*{
+					name: localStorage.getItem("p0name"),
+					data: p0history,
+					color: '#607D8B'
+				}, */{
+					name: localStorage.getItem("p1name"),
+					data: p1history,
+					color: '#EF5350'
+				}, {
+					name: localStorage.getItem("p2name"),
+					data: p2history,
+					color: '#FFCA28'
+				}, {
+					name: localStorage.getItem("p3name"),
+					data: p3history,
+					color: '#29B6F6'
+				}/*, {
+					name: localStorage.getItem("p4name"),
+					data: p4history,
+					color: '#43A047'
+				}*/]
+			});
+			
+			window.addEventListener('storage', onStorageEvent, false);
+			//pushBalances();
+			//refreshChart();
+		}
+	</script>
+	
+	
+</head>
+<body onload="init()">
+	<div id="container" style="width:100%; height:400px;"></div>
+</body>
+</html>
