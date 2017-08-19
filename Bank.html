@@ -139,6 +139,19 @@
 		div.icon.up { color: #C8E6C9; }
 		div.icon.down { color: #FFCDD2; }
 		div.icon.dollar { color: #FFECB3; }
+		
+		@-webkit-keyframes blinker {
+			from {opacity: 1.0;}
+			to {opacity: 0.0;}
+		}
+		.blink{
+			text-decoration: blink;
+			-webkit-animation-name: blinker;
+			-webkit-animation-duration: 0.6s;
+			-webkit-animation-iteration-count:infinite;
+			-webkit-animation-timing-function:ease-in-out;
+			-webkit-animation-direction: alternate;
+		}
 	</style>
 	<script src="config.js"></script>
 	<script type="text/javascript">
@@ -232,8 +245,11 @@
 			var red = 100;
 			var orange = 500;
 			
+			elem.className = elem.className.replace("blink", "");
+			
 			if (bal > 0 && bal <= red) {
 				colour = "red";
+				elem.className += " blink";
 			}
 			if (bal > red && bal <= orange) {
 				colour = "orange";
